@@ -23,9 +23,32 @@ public class JpaMain{
             em.persist(member);
             tx.commit();
             */
+            //Member findMember = em.find(Member.class, 1L);
+            //findMember.setName("최준호");
 
-            Member findMember = em.find(Member.class, 1L);
-            findMember.setName("최준호");
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+            //이전에는 외래키의 값을 넣어줬다면
+            //member.setTeam_id(team.getId());
+            //team 객체 그대로 넣어줘도 jpa가 알아서 찾아준다.
+            member.setTeam(team);
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+            
+            //이전에는 가져온 외래키 값으로 해당 팀을 찾아갔다면
+            //Long findTeamId = findMember.getTeam_id();
+            //Team findTeam = em.find(Team.class, findTeamId);
+            //객체 자체를 가져오기 때문에 team을 그대로 가져다 쓰면 된다. jpa가 알아서 join해서 가져온다.
+            Team findTeam = findMember.getTeam();
+            System.out.println("find Team > "+findTeam.getName());
+
+            //
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
