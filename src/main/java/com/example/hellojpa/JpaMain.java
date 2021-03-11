@@ -1,5 +1,7 @@
 package com.example.hellojpa;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -38,14 +40,20 @@ public class JpaMain{
             member.setTeam(team);
             em.persist(member);
 
+            em.flush();
+            em.clear();
+
             Member findMember = em.find(Member.class, member.getId());
             
             //이전에는 가져온 외래키 값으로 해당 팀을 찾아갔다면
             //Long findTeamId = findMember.getTeam_id();
             //Team findTeam = em.find(Team.class, findTeamId);
             //객체 자체를 가져오기 때문에 team을 그대로 가져다 쓰면 된다. jpa가 알아서 join해서 가져온다.
-            Team findTeam = findMember.getTeam();
-            System.out.println("find Team > "+findTeam.getName());
+            List<Member> members = findMember.getTeam().getMembers();
+            
+            for(Member m : members){
+                System.out.println("m = "+m.getUsername());
+            }
 
             //
 
