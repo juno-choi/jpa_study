@@ -37,11 +37,11 @@ public class JpaMain{
             //이전에는 외래키의 값을 넣어줬다면
             //member.setTeam_id(team.getId());
             //team 객체 그대로 넣어줘도 jpa가 알아서 찾아준다.
-            member.setTeam(team);
+            member.changeTeam(team);    // 연관관계 메서드를 생성하여 team의 값을 양방향으로 세팅해준다.
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            //em.flush();
+            //em.clear();
 
             Member findMember = em.find(Member.class, member.getId());
             

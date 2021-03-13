@@ -31,8 +31,10 @@ public class Member {
         return this.team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) {
         this.team = team;
+        //양방향 연관관계를 위한 연관관계 편의 메서드를 만들어서 사용한다.
+        team.getMembers().add(this);
     }
 
 	public Long getId() {
