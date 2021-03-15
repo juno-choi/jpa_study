@@ -1,56 +1,45 @@
 package com.example.hellojpa;
 
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
 public class Member {
     
-    @Id @GeneratedValue
-    @Column(name = "MEMBER_ID")
-    private Long id;
-    
-    @Column(name = "USERNAME")
-    private String username;
+    @Id 
+    private Long id; 
 
-    //실제 RDBMS처럼 관계가 있는 외래키를 갖고 있을 경우 객체지향적인 코드를 만들기 어렵다.
-    //@Column(name = "TEAM_ID")
-    //private Long team_id;
-    
-    //그래서 외래키를 갖는 컬럼을 갖고 있는게 아닌 테이블 자체에서 join하는 column을 jpa에게 알려준다.
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    @Column(name = "name") 
+    private String username; 
 
-    public Team getTeam() {
-        return this.team;
+    private Integer age; 
+
+    @Enumerated(EnumType.STRING) //DB에 없는 type을 사용하고 싶을땐 Enumerated
+    private RoleType roleType; 
+
+    @Temporal(TemporalType.TIMESTAMP) //날짜에 사용할 수 있는 어노테이션
+    private Date createdDate; 
+
+    @Temporal(TemporalType.TIMESTAMP) 
+    private Date lastModifiedDate; 
+
+    @Lob //varchar보다 큰 데이터를 넣을 필요가 있을때 사용하는 어노테이션
+    private String description; 
+
+    public Member(){
+
     }
-
-    public void changeTeam(Team team) {
-        this.team = team;
-        //양방향 연관관계를 위한 연관관계 편의 메서드를 만들어서 사용한다.
-        team.getMembers().add(this);
-    }
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 }
