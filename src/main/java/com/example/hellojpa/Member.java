@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,12 +21,30 @@ import javax.persistence.TemporalType;
 public class Member {
     
     @Id 
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id; 
 
-    @Column(name = "name") 
-    private String username; 
+    @Column(name = "USERNAME") 
+    private String username;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     private Integer age; 
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     @Enumerated(EnumType.STRING) //DB에 없는 type을 사용하고 싶을땐 Enumerated
     private RoleType roleType; 
@@ -42,4 +61,5 @@ public class Member {
     public Member(){
 
     }
+
 }
