@@ -17,7 +17,7 @@ public class MemberProduct {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name="MEMBER_ID")
+    @JoinColumn(name="PRODUCT_ID")
     private Product product;
 
     //추가되는 컬럼을 해당 엔티티에서 추가해서 사용
