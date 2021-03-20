@@ -25,14 +25,30 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class Member extends BaseEntity{
-    
-    @Id 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
     @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id; 
 
     @Column(name = "USERNAME") 
     private String username;
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
