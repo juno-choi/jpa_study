@@ -21,26 +21,28 @@ public class JpaMain{
         tx.begin();
         //code
         try{
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-            
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.setTeam(team);
-            em.persist(member1);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+
+            /*
+            cascade type을 all로 주면 parent만 영속성 관리해도 연결되어 있는 child가 모두 영속성 등록된다.
+            em.persist(child1);
+            em.persist(child2);
+            */
 
             em.flush();
             em.clear();
 
-            Member m = em.find(Member.class, member1.getId());
-            //지연 로딩 LAZY를 사용해서 프록시로 조회
-            //class를 확인하면 proxy로 가져옴
-            //즉시 로딩 EAGER를 사용하면 한번에 join된 객체를 다 가져온다. 그러므로 froxy가 아닌 entity자체를 가져옴
-            System.out.println("m = "+ m.getTeam().getClass());
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
 
-            m.getTeam().getName();
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
