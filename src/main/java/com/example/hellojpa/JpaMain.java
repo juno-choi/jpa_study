@@ -21,27 +21,12 @@ public class JpaMain{
         tx.begin();
         //code
         try{
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Member member = new Member();
+            member.setUsername("hello");
+            member.setHomeAddress(new Address("city","street","123"));
+            member.setWorkPeriod(new Period());
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-
-            /*
-            cascade type을 all로 주면 parent만 영속성 관리해도 연결되어 있는 child가 모두 영속성 등록된다.
-            em.persist(child1);
-            em.persist(child2);
-            */
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-
+            em.persist(member);
 
             tx.commit();
         }catch(Exception e){
