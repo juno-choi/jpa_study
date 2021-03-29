@@ -3,9 +3,7 @@ package com.example.hellojpa;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -21,6 +19,34 @@ public class Member{
     @Column(name = "USERNAME") 
     private String username;
 
+    @Embedded
+    private Address homeAddress;
+
+    @ElementCollection
+    @CollectionTable(name="FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFood = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name="ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
+
+    public Set<String> getFavoriteFood() {
+        return favoriteFood;
+    }
+
+    public void setFavoriteFood(Set<String> favoriteFood) {
+        this.favoriteFood = favoriteFood;
+    }
+
+    public List<Address> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<Address> addressHistory) {
+        this.addressHistory = addressHistory;
+    }
+
     //기간
     //private LocalDateTime startDate;
     //private LocalDateTime endDate;
@@ -31,8 +57,7 @@ public class Member{
     //private String city;
     //private String street;
     //private String zipCode;
-    @Embedded
-    private Address homeAddress;
+
 
     public Long getId() {
         return id;
